@@ -29,7 +29,7 @@ public class LinkedList {
         return sb.toString();
     }
 
-    public class LinkedListNode {
+    private class LinkedListNode {
         public int _data = 0;
         public LinkedListNode _next_node = null;
 
