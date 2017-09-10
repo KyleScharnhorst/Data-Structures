@@ -42,7 +42,7 @@ public class SinglyLinkedList {
      * Main for testing basic functionality.
      */
     public static void main(String[] args) {
-        SinglyLinkedList sll = new LinkedList();
+        SinglyLinkedList sll = new SinglyLinkedList();
         System.out.println(sll.toString());
         sll.appendToTail(1);
         sll.appendToTail(2);
