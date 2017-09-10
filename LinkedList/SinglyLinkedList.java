@@ -1,9 +1,9 @@
 /**
- * This class provides a basic implementation of a linked list.
+ * This class provides a basic implementation of a singly linked list.
  */
 import java.lang.StringBuilder;
 
-public class LinkedList {
+public class SinglyLinkedList {
     public LinkedListNode _head_node = null;
     public LinkedListNode _tail_node = null;
 
@@ -39,15 +39,15 @@ public class LinkedList {
     }
 
     /**
-     * Main for testing functionality.
+     * Main for testing basic functionality.
      */
     public static void main(String[] args) {
-        LinkedList l = new LinkedList();
-        System.out.println(l.toString());
-        l.appendToTail(1);
-        l.appendToTail(2);
-        l.appendToTail(3);
-        l.appendToTail(4);
-        System.out.println(l.toString());
+        SinglyLinkedList sll = new LinkedList();
+        System.out.println(sll.toString());
+        sll.appendToTail(1);
+        sll.appendToTail(2);
+        sll.appendToTail(3);
+        sll.appendToTail(4);
+        System.out.println(sll.toString());
     }
 }
