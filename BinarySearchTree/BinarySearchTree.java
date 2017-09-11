@@ -1,5 +1,3 @@
-import javax.swing.tree.TreeNode;
-
 public class BinarySearchTree<T extends Comparable<T>> {
     private TreeNode<T> _head = null;
 
