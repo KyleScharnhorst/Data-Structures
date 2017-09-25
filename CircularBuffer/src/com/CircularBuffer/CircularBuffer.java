@@ -6,8 +6,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class CircularBuffer {
     private char[] _buffer;
     public final int _buffer_size;
-    private AtomicInteger _write_index = new AtomicInteger(0);
-    private AtomicInteger _read_index = new AtomicInteger(0);
+    private int _write_index = 0;
+    private int _read_index = 0;
     private AtomicInteger _readable_data = new AtomicInteger(0);
 
     public CircularBuffer(int buffer_size) {
@@ -31,9 +31,9 @@ public class CircularBuffer {
 
         //if we have data to read
         if(_readable_data.get() > 0) {
-            result = new Character(_buffer[getTrueIndex(_read_index.get())]);
+            result = new Character(_buffer[getTrueIndex(_read_index)]);
             _readable_data.decrementAndGet();
-            _read_index.incrementAndGet();
+            _read_index++;
         }
 
         return result;
@@ -45,9 +45,9 @@ public class CircularBuffer {
         //if we can write to the buffer
         if(_readable_data.get() < _buffer_size) {
             //write to buffer
-            _buffer[getTrueIndex(_write_index.get())] = c;
+            _buffer[getTrueIndex(_write_index)] = c;
             _readable_data.incrementAndGet();
-            _write_index.incrementAndGet();
+            _write_index++;
             result = true;
         }
 
