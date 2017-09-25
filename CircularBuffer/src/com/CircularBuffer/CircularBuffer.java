@@ -21,17 +21,13 @@ public class CircularBuffer {
         return (i & (i - 1)) == 0;
     }
 
-    private int GetReadableDataRange() {
-
-    }
-
     private int getTrueIndex(int i) {
         return i % _buffer_size;
     }
 
     public Character readOutChar() {
         Character result = null;
-        
+
         //if we have data to read
         if(_readable_data > 0) {
             result = new Character(_buffer[getTrueIndex(_read_index)]);
@@ -90,8 +86,19 @@ public class CircularBuffer {
         }
 
         public void run() {
+            System.out.println("Printing Buffer:");
             while(!Thread.interrupted()) {
-
+                Character c = _buffer.readOutChar();
+                if(c != null) {
+                    System.out.print(c.charValue());
+                } else {
+                    Thread.yield();
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        return;
+                    }
+                }
             }
         }
     }
