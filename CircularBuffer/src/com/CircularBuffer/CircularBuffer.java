@@ -1,13 +1,14 @@
 package com.CircularBuffer;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CircularBuffer {
     private char[] _buffer;
     public final int _buffer_size;
-    private int _write_index = 0;
-    private int _read_index = 0;
-    private int _readable_data = 0;
+    private AtomicInteger _write_index = new AtomicInteger(0);
+    private AtomicInteger _read_index = new AtomicInteger(0);
+    private AtomicInteger _readable_data = new AtomicInteger(0);
 
     public CircularBuffer(int buffer_size) {
         if(!IsPowerOfTwo(buffer_size)) {
@@ -29,10 +30,10 @@ public class CircularBuffer {
         Character result = null;
 
         //if we have data to read
-        if(_readable_data > 0) {
-            result = new Character(_buffer[getTrueIndex(_read_index)]);
-            _readable_data--;
-            _read_index++;
+        if(_readable_data.get() > 0) {
+            result = new Character(_buffer[getTrueIndex(_read_index.get())]);
+            _readable_data.decrementAndGet();
+            _read_index.incrementAndGet();
         }
 
         return result;
@@ -42,11 +43,11 @@ public class CircularBuffer {
         boolean result = false;
 
         //if we can write to the buffer
-        if(_readable_data < _buffer_size) {
+        if(_readable_data.get() < _buffer_size) {
             //write to buffer
-            _buffer[getTrueIndex(_write_index)] = c;
-            _readable_data++;
-            _write_index++;
+            _buffer[getTrueIndex(_write_index.get())] = c;
+            _readable_data.incrementAndGet();
+            _write_index.incrementAndGet();
             result = true;
         }
 
@@ -111,9 +112,9 @@ public class CircularBuffer {
 
         //create threads that read and write the buffer.
         Thread write_thread = new Thread(new TestWriteWorker(cb));
-        write_thread.start();
         Thread read_thread = new Thread(new TestReadWorker(cb));
         read_thread.start();
+        write_thread.start();
 
         //wait some amount of time
         Thread.sleep(10000);
