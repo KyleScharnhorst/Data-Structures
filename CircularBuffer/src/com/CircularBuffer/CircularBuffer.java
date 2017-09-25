@@ -96,6 +96,7 @@ public class CircularBuffer {
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException e) {
+                        System.out.println();
                         return;
                     }
                 }
@@ -104,7 +105,7 @@ public class CircularBuffer {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        int buffer_size = 64;
+        int buffer_size = 1024;
         //create circular buffer
         CircularBuffer cb = new CircularBuffer(buffer_size);
 
