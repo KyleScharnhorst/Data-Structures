@@ -7,6 +7,7 @@ public class CircularBuffer {
     public final int _buffer_size;
     private int _write_index = 0;
     private int _read_index = 0;
+    private int _readable_data = 0;
 
     public CircularBuffer(int buffer_size) {
         if(!IsPowerOfTwo(buffer_size)) {
@@ -20,21 +21,32 @@ public class CircularBuffer {
         return (i & (i - 1)) == 0;
     }
 
-//    private int GetReadableDataRange() {
-//
-//    }
+    private int GetReadableDataRange() {
+
+    }
 
     private int getTrueIndex(int i) {
         return i % _buffer_size;
     }
 
-    public char[] readOutBuffer() {
+    public char readOutChar() {
         //char result = _buffer[];
         return new char[1];
     }
 
-    public boolean writeToBuffer(char c) {
-        return false;
+    public boolean writeToCharBuffer(char c) {
+        boolean result = false;
+
+        //if we can write to the buffer
+        if(_readable_data < _buffer_size) {
+            //write to buffer
+            _buffer[getTrueIndex(_write_index)] = c;
+            _readable_data++;
+            _write_index++;
+            result = true;
+        }
+
+        return result;
     }
 
     private static class TestWriteWorker implements Runnable {
@@ -51,7 +63,7 @@ public class CircularBuffer {
 
         public void run() {
             while(!Thread.interrupted()) {
-                if(!_buffer.writeToBuffer(getRandomChar())){
+                if(!_buffer.writeToCharBuffer(getRandomChar())){
                     Thread.yield();
                     try{
                         Thread.sleep(10);
