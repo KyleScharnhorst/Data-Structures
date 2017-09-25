@@ -1,5 +1,7 @@
 package com.CircularBuffer;
 
+import java.util.Random;
+
 public class CircularBuffer {
     private char[] _buffer;
     public final int _buffer_size;
@@ -17,12 +19,28 @@ public class CircularBuffer {
     }
 
     private static class TestWriteWorker implements Runnable {
+        String _alphabet = "abcdefghijklmnopqrstuvwxyz0123456789";
+        Random _random = new Random();
         CircularBuffer _buffer;
         public TestWriteWorker(CircularBuffer cb) {
             this._buffer = cb;
         }
-        public void run() {
 
+        private char getRandomChar() {
+            return _alphabet.charAt(_random.nextInt(_alphabet.length()));
+        }
+
+        public void run() {
+            while(!Thread.interrupted()) {
+                if(!_buffer.writeToBuffer(getRandomChar())){
+                    Thread.yield();
+                    try{
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        return;
+                    }
+                }
+            }
         }
     }
 
